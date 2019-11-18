@@ -1,0 +1,36 @@
+{
+  "name": "parks",
+  "version": "1.0.0",
+  "description": "## BW",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "migrate": "knex migrate:latest",
+    "seed": "knex seed: run",
+    "server": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ziggyss/parks.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Ziggyss/parks/issues"
+  },
+  "homepage": "https://github.com/Ziggyss/parks#readme",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "formik": "^2.0.4",
+    "helmet": "^3.21.2",
+    "jsonwebtoken": "^8.5.1",
+    "knex": "^0.20.1",
+    "nodemon": "^1.19.4",
+    "react": "^16.11.0",
+    "sqlite3": "^4.1.0"
+  }
+}
