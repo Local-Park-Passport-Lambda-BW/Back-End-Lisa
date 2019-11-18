@@ -1,9 +1,7 @@
 exports.seed = function(knex) {
-  // Deletes ALL existing entries
   return knex("properties")
     .del()
     .then(function() {
-      // Inserts seed entries
       return knex("properties").insert([
         {
           name: "walking trails",

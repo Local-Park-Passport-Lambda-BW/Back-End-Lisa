@@ -1,5 +1,4 @@
 const express = require("express");
-// const bcrypt = require("bcryptjs");
 const Parks = require("./parks-model");
 const router = express.Router();
 
