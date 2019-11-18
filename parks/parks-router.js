@@ -11,8 +11,23 @@ router.get("/", (req,res) => {
 })
 
 router.post("/", (req, res) => {
-    Parks.add
-})
-
+    const { name, city, country, description } = req.body;
+    const newPark = {
+      name,
+      city,
+      country,
+      description
+    };
+  
+    Parks.add(newPark)
+      .then(saved => {
+        res.status(201).json(saved);
+      })
+      .catch(error => {
+        res.status(500).json({
+          message: "There was an error adding the park: " + error.message
+        });
+      });
+  });
 
 module.exports = router;
