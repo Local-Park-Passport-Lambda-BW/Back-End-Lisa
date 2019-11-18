@@ -17,7 +17,7 @@ server.use('/parks', parksRouter);
 server.use('/users', userRouter);
 
 server.get('/', (req, res) => {
-  res.send("It's alive!");
+  res.send("Welcome to the Parks Passport API!");
 });
 
 server.use("/api", userRouter)
