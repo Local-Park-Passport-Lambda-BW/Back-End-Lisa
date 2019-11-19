@@ -46,7 +46,7 @@ router.post("/login", (req, res) => {
     });
 });
 
-router.get("/users", (req, res) => {
+router.get("/list", (req, res) => {
   const token = req.headers.authorization;
   if (token) {
     jwt.verify(token, process.env.SECRET_KEY, (err, decodedToken) => {
@@ -68,7 +68,7 @@ router.get("/users", (req, res) => {
   }
 });
 
-router.get("/users/demo", (req, res) => {
+router.get("/list/demo", (req, res) => {
   Users.find()
     .then(users => res.status(200).json(users))
     .catch(err =>
@@ -78,7 +78,7 @@ router.get("/users/demo", (req, res) => {
     );
 });
 
-router.get("/users/:id", (req, res) => {
+router.get("/:id", (req, res) => {
   const token = req.headers.authorization;
   const { id } = req.params;
   if (token) {
@@ -101,7 +101,7 @@ router.get("/users/:id", (req, res) => {
   }
 });
 
-router.get("/users/demo/:id", (req, res) => {
+router.get("/:id/demo", (req, res) => {
   const { id } = req.params;
   Users.findBy({ id })
     .then(user => {
@@ -110,6 +110,19 @@ router.get("/users/demo/:id", (req, res) => {
     .catch(err => {
       res.status(500).json({
         message: "Failed to get user: " + err.message
+      });
+    });
+});
+
+router.get("/:id/demo/ratings", (req, res) => {
+  const { id } = req.params;
+  Users.getRatings(id)
+    .then(ratings => {
+      res.status(200).json(ratings);
+    })
+    .catch(err => {
+      res.status(500).json({
+        message: "Failed to get ratings: " + err.message
       });
     });
 });
@@ -123,11 +136,7 @@ function generateToken(user) {
     expiresIn: "1d"
   };
 
-  const result = jwt.sign(
-    payload,
-    process.env.SECRET_KEY,
-    options
-  );
+  const result = jwt.sign(payload, process.env.SECRET_KEY, options);
 
   return result;
 }

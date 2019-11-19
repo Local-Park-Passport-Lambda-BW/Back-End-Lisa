@@ -2,34 +2,69 @@ const express = require("express");
 const Parks = require("./parks-model");
 const router = express.Router();
 
-router.get("/", (req,res) => {
-    Parks.find()
+router.get("/", (req, res) => {
+  Parks.find()
     .then(parks => res.status(200).json(parks))
-    .catch(err => res.status(500).json({
+    .catch(err =>
+      res.status(500).json({
         message: "There was an error fetching the parks: " + err.message
-    }))
-})
+      })
+    );
+});
+
 
 router.post("/", (req, res) => {
-    const { name, city, country, description } = req.body;
-    const newPark = {
-      name,
-      city,
-      country,
-      description
-    };
-  
-    Parks.add(newPark)
-      .then(saved => {
-        res.status(201).json(saved);
-      })
-      .catch(error => {
-        res.status(500).json({
-          message: "There was an error adding the park: " + error.message
-        });
-      });
-  });
+  const { name, city, country, description } = req.body;
+  const newPark = {
+    name,
+    city,
+    country,
+    description
+  };
 
-  router.get("")
+  Parks.add(newPark)
+    .then(saved => {
+      res.status(201).json(saved);
+    })
+    .catch(err => {
+      res.status(500).json({
+        message: "There was an error adding the park: " + err.message
+      });
+    });
+});
+
+router.get("/:id/facilities", (req, res) => {
+  const { id } = req.params;
+  Parks.findFacilities(id)
+    .then(park => {
+      res.status(200).json(park);
+    })
+    .catch(err => {
+      res.status(500).json({
+        message: "Error fetching the park details: " + err.message
+      });
+    });
+});
+
+router.post("/:id/facilities", (req, res) => {
+    const {name, description} = req.body;
+    const newFacility = {
+        name, 
+        description
+    }
+})
+
+router.get("/:id", (req, res) => {
+    const {id} = req.params;
+    Parks.findById(id)
+    .then(park => {
+        res.status(200).json(park);
+    })
+    .catch(err => {
+        res.status(500).json({
+            message: "Error fetching the park: " + err.message
+        })
+    })
+});
 
 module.exports = router;

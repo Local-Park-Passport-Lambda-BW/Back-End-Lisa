@@ -4,7 +4,7 @@ module.exports = {
     find,
     add,
     findById,
-  
+    findFacilities,
   };
 
   function find() {
@@ -21,9 +21,25 @@ module.exports = {
       });
   }
 
+  // function addFacility(facility){
+  //   return db('p')
+  //   .
+  // }
+
   function findById(id) {
     return db('parks')
       .where({ id })
       .first();
   }
+
+  function findFacilities(id){
+    return db('parks as p')
+    .select('pr.name', 'pr.description')
+    .join('park_properties as pp', 'p.id', 'pp.park_id')
+    .join('properties as pr', 'pp.property_id', 'pr.id')
+    .where('p.id', id)
+  }
+
+ 
+    
 

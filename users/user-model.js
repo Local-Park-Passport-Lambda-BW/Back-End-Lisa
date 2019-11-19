@@ -5,6 +5,7 @@ module.exports = {
   find,
   findBy,
   findById,
+  getRatings
 };
 
 function find() {
@@ -28,4 +29,12 @@ function findById(id) {
   return db('users')
     .where({ id })
     .first();
+}
+
+function getRatings(id){
+  return db('ratings as r')
+  .select('r.rating', 'r.comment', 'p.name')
+  .join('parks as p', 'r.park_id', 'p.id' )
+  .join('users as u', 'r.user_id', 'u.id')
+  .where('u.id', id)
 }
