@@ -6,7 +6,8 @@ module.exports = {
   findById,
   findFacilities,
   getRatings,
-  update
+  update,
+  remove
 };
 
 function find() {
@@ -59,4 +60,10 @@ function update(changes, id) {
   return db("parks")
     .update(changes)
     .where({ id });
+}
+
+function remove(id) {
+  return db("parks")
+    .where("id", id)
+    .del();
 }

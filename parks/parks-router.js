@@ -73,7 +73,10 @@ router.put("/:id", (req, res) => {
     .then(park => {
       if (park) {
         Parks.update(changes, id).then(updatedPark => {
-          res.json({message: "You have successfully updated the park:" , updatedPark});
+          res.json({
+            message: "You have successfully updated the park:",
+            updatedPark
+          });
         });
       } else {
         res.status(404).json({ message: "Could not find park with given id." });
@@ -96,6 +99,21 @@ router.get("/:id/ratings", (req, res) => {
       res.status(500).json({
         message: "Error fetching the park ratings: " + err.message
       });
+    });
+});
+
+router.delete("/:id", (req, res) => {
+  const { id } = req.params;
+  Parks.remove(id)
+    .then(deleted => {
+      if (deleted) {
+        res.json({ removed: deleted });
+      } else {
+        res.status(404).json({ message: "Could not find park with given id" });
+      }
+    })
+    .catch(err => {
+      res.status(500).json({ message: "Failed to delete park" });
     });
 });
 
