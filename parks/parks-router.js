@@ -36,7 +36,8 @@ router.get("/:id/facilities", (req, res) => {
   const { id } = req.params;
   Parks.findFacilities(id)
     .then(park => {
-      res.status(200).json(park);
+      res.status(200).json(park)
+      console.log(park);
     })
     .catch(err => {
       res.status(500).json({

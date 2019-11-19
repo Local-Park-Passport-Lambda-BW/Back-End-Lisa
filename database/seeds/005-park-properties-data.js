@@ -1,6 +1,6 @@
 exports.seed = function(knex) {
   return knex("park_properties")
-    .del()
+    .truncate()
     .then(function() {
       return knex("park_properties").insert([
         { park_id: 1, property_id: 4 },
