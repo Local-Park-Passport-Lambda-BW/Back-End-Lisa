@@ -30,4 +30,6 @@ router.post("/", (req, res) => {
       });
   });
 
+  router.get("")
+
 module.exports = router;

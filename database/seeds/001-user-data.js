@@ -5,19 +5,19 @@ exports.seed = function(knex) {
       return knex("users").insert([
         {
           name: "Ziggy Z",
-          username: "Ziggyss",
+          username: "Ziggy",
           email: "z@z.com",
           password: "1234"
         },
         {
           name: "Zuri Z",
-          username: "Zuriss",
+          username: "Zuri",
           email: "z@zz.com",
           password: "1234"
         },
         {
           name: "Loki L",
-          username: "Lokiss",
+          username: "Loki",
           email: "l@l.com",
           password: "1234"
         }
