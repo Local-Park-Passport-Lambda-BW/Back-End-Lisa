@@ -19,7 +19,7 @@ function find() {
     .select("p.id", "p.name", "p.description", "p.city", "p.country")
     .avg("ratings.rating as average_rating")
     .leftJoin("ratings", "p.id", "ratings.park_id")
-    .groupBy("p.name", "p.id", "p.description", "p.city", "p.country" );
+    .groupBy("p.name", "p.id" );
 }
 
 
@@ -34,7 +34,7 @@ function add(park) {
 
 function addFacility(facility) {
   return db("park_properties")
-    .insert(facility)
+    .insert(facility, "id")
     .then(ids => {
       const [id] = ids;
       return findById(id);
