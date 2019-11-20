@@ -16,23 +16,12 @@ module.exports = {
 
 function find() {
   return db("parks as p")
-    .select("p.id", "name", "description", "city", "country", "rating")
+    .select("p.id", "name", "description", "city", "country")
     .avg("ratings.rating as average_rating")
-
     .leftJoin("ratings", "p.id", "ratings.park_id")
     .groupBy("p.name");
 }
 
-// SELECT parks.name,
-//        parks.description,
-//        parks.id,
-//        parks.city,
-//        parks.country,
-//        AVG(rating) AS average_rating
-//   FROM parks
-//        LEFT JOIN
-//        ratings ON parks.id = ratings.park_id
-//  GROUP BY parks.name
 
 function add(park) {
   return db("parks")
