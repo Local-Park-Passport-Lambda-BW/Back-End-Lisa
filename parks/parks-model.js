@@ -19,7 +19,7 @@ function find() {
     .select("p.id", "p.name", "p.description", "p.city", "p.country")
     .avg("ratings.rating as average_rating")
     .leftJoin("ratings", "p.id", "ratings.park_id")
-    .groupBy("p.name", "p.id" );
+    .groupBy("p.id", "p.name", "p.description", "p.city", "p.country");
 }
 
 
