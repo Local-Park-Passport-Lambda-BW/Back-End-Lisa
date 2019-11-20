@@ -4,9 +4,9 @@ FOR LOCAL FUNCTIONALITY:
 Here are the steps.
 
 - Clone the repo
-- npm run install
-- knex migrate:latest
-- knex seed:run
+- npm install
+- npx knex migrate:latest
+- npx knex seed:run
 - npm start
 
 
