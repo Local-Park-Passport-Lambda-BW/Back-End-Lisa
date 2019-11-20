@@ -7,7 +7,11 @@ module.exports = {
   findFacilities,
   getRatings,
   update,
-  remove
+  remove,
+  getParkById,
+  addRating,
+  getAllFacilities,
+  addFacility
 };
 
 function find() {
@@ -29,10 +33,33 @@ function add(park) {
     });
 }
 
-// function addFacility(facility){
-//   return db('p')
-//   .
-// }
+function addFacility(facility){
+  return db("park_properties")
+  .insert(facility)
+  .then(ids => {
+    const [id] = ids;
+    return findById(id);
+  });
+}
+
+function getAllFacilities(){
+  return db('properties')
+}
+
+function addRating(rating) {
+  return db("ratings")
+    .insert(rating, "id")
+    .then(ids => {
+      const [id] = ids;
+      return findRatingById(id);
+    });
+}
+
+function findRatingById(id) {
+  return db("ratings")
+    .where({ id })
+    .first();
+}
 
 function findById(id) {
   return db("parks")
@@ -42,7 +69,7 @@ function findById(id) {
 
 function findFacilities(id) {
   return db("parks as p")
-    .select("pr.name", "pr.description")
+    .select("pr.name as facility_name", "pr.description")
     .join("park_properties as pp", "p.id", "pp.park_id")
     .join("properties as pr", "pp.property_id", "pr.id")
     .where("p.id", id);
@@ -66,4 +93,20 @@ function remove(id) {
   return db("parks")
     .where("id", id)
     .del();
+}
+
+function getParkById(id) {
+  return db
+    .select(
+      "p.id",
+      "p.name as park_name",
+      "p.city",
+      "p.description as park_description",
+      "pr.name as property_name",
+      "pr.description as property_description"
+    )
+    .from("parks as p")
+    .join("properties as pr", "p.id", "pr.id")
+    .join("park_properties as pp", "p.id", "pp.park_id")
+    .where("p.id", id);
 }

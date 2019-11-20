@@ -5,7 +5,8 @@ module.exports = {
   find,
   findBy,
   findById,
-  getRatings
+  getRatings,
+
 };
 
 function find() {
@@ -38,3 +39,4 @@ function getRatings(id){
   .join('users as u', 'r.user_id', 'u.id')
   .where('u.id', id)
 }
+

@@ -102,14 +102,37 @@ router.get("/:id", (req, res) => {
 });
 
 router.get("/:id/demo", (req, res) => {
+  const token = req.headers.authorization;
   const { id } = req.params;
-  Users.findBy({ id })
-    .then(user => {
-      res.json(user);
+  if (token) {
+    jwt.verify(token, process.env.SECRET_KEY, (err, decodedToken) => {
+      if (err) {
+        res.status(401).json({ message: "bad token " + err.message });
+      } else {
+        req.decodedToken = decodedToken;
+        Users.findBy({ id })
+          .then(user => {
+            res.json(user);
+          })
+          .catch(err => {
+            res.status(500).json({
+              message: "Failed to get user: " + err.message
+            });
+          });
+      }
+    });
+  }
+});
+
+router.get("/:id/ratings", (req, res) => {
+  const { id } = req.params;
+  Users.getRatings(id)
+    .then(ratings => {
+      res.status(200).json(ratings);
     })
     .catch(err => {
       res.status(500).json({
-        message: "Failed to get user: " + err.message
+        message: "Failed to get ratings: " + err.message
       });
     });
 });
