@@ -57,7 +57,6 @@ router.get("/facilities", (req, res) => {
     });
 });
 
-
 router.get("/:id", (req, res) => {
   const { id } = req.params;
   const park = Parks.findById(id);
@@ -92,7 +91,7 @@ router.post("/:id", (req, res) => {
     });
 });
 
-router.put("/:id", (req, res) => {
+router.put("/:id", restricted, (req, res) => {
   const { id } = req.params;
   const changes = req.body;
   Parks.findById(id)
@@ -146,8 +145,7 @@ router.post("/:id/ratings", restricted, (req, res) => {
     });
 });
 
-router.post("/:id/ratings", (req, res) => {
-
+router.post("/:id/ratings/demo", (req, res) => {
   const { id } = req.params;
   let park_id = id;
   const { rating, comment, user_id } = req.body;
@@ -162,9 +160,6 @@ router.post("/:id/ratings", (req, res) => {
       });
     });
 });
-
-
-
 
 router.delete("/:id", restricted, (req, res) => {
   const { id } = req.params;
