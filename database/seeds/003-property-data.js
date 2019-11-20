@@ -1,6 +1,6 @@
 exports.seed = function(knex) {
   return knex("properties")
-    .truncate()
+    .del()
     .then(function() {
       return knex("properties").insert([
         {

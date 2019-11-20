@@ -1,6 +1,6 @@
 exports.seed = function(knex) {
   return knex("ratings")
-    .truncate()
+    .del()
     .then(function() {
       return knex("ratings").insert([
         {
