@@ -15,16 +15,24 @@ module.exports = {
 };
 
 function find() {
-  return db("parks as p").select(
-    "p.id",
-    "name",
-    "description",
-    "city",
-    "country",
-    "rating"
-  )
-  .leftJoin("ratings", "p.id", "ratings.park_id")
+  return db("parks as p")
+    .select("p.id", "name", "description", "city", "country", "rating")
+    .avg("ratings.rating as average_rating")
+
+    .leftJoin("ratings", "p.id", "ratings.park_id")
+    .groupBy("p.name");
 }
+
+// SELECT parks.name,
+//        parks.description,
+//        parks.id,
+//        parks.city,
+//        parks.country,
+//        AVG(rating) AS average_rating
+//   FROM parks
+//        LEFT JOIN
+//        ratings ON parks.id = ratings.park_id
+//  GROUP BY parks.name
 
 function add(park) {
   return db("parks")
@@ -35,17 +43,17 @@ function add(park) {
     });
 }
 
-function addFacility(facility){
+function addFacility(facility) {
   return db("park_properties")
-  .insert(facility)
-  .then(ids => {
-    const [id] = ids;
-    return findById(id);
-  });
+    .insert(facility)
+    .then(ids => {
+      const [id] = ids;
+      return findById(id);
+    });
 }
 
-function getAllFacilities(){
-  return db('properties')
+function getAllFacilities() {
+  return db("properties");
 }
 
 function addRating(rating) {
