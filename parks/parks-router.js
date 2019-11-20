@@ -57,13 +57,6 @@ router.get("/facilities", (req, res) => {
     });
 });
 
-// router.post("/:id/facilities", (req, res) => {
-//     const {name, description} = req.body;
-//     const newFacility = {
-//         name,
-//         description
-//     }
-// })
 
 router.get("/:id", (req, res) => {
   const { id } = req.params;
@@ -152,6 +145,26 @@ router.post("/:id/ratings", restricted, (req, res) => {
       });
     });
 });
+
+router.post("/:id/ratings", (req, res) => {
+
+  const { id } = req.params;
+  let park_id = id;
+  const { rating, comment, user_id } = req.body;
+  const newRating = { rating, comment, park_id, user_id };
+  Parks.addRating(newRating)
+    .then(saved => {
+      res.status(200).json(saved);
+    })
+    .catch(err => {
+      res.status(500).json({
+        message: "Error adding the rating: " + err.message
+      });
+    });
+});
+
+
+
 
 router.delete("/:id", restricted, (req, res) => {
   const { id } = req.params;

@@ -16,12 +16,14 @@ module.exports = {
 
 function find() {
   return db("parks as p").select(
-    "id",
+    "p.id",
     "name",
     "description",
     "city",
-    "country"
-  );
+    "country",
+    "rating"
+  )
+  .leftJoin("ratings", "p.id", "ratings.park_id")
 }
 
 function add(park) {
