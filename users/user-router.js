@@ -4,6 +4,7 @@ const Users = require("./user-model");
 const router = express.Router();
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
+const restricted = require("../auth/restricted-middleware");
 
 router.post("/register", (req, res) => {
   const { name, username, email, password } = req.body;
@@ -46,26 +47,14 @@ router.post("/login", (req, res) => {
     });
 });
 
-router.get("/list", (req, res) => {
-  const token = req.headers.authorization;
-  if (token) {
-    jwt.verify(token, process.env.SECRET_KEY, (err, decodedToken) => {
-      if (err) {
-        res.status(401).json({ message: "bad token " + err.message });
-      } else {
-        req.decodedToken = decodedToken;
-        Users.find()
-          .then(users => res.status(200).json(users))
-          .catch(err =>
-            res.status(500).json({
-              message: err.message
-            })
-          );
-      }
-    });
-  } else {
-    res.status(400).json({ message: "You shall not pass!" });
-  }
+router.get("/list", restricted, (req, res) => {
+  Users.find()
+    .then(users => res.status(200).json(users))
+    .catch(err =>
+      res.status(500).json({
+        message: err.message
+      })
+    );
 });
 
 router.get("/list/demo", (req, res) => {
@@ -78,27 +67,16 @@ router.get("/list/demo", (req, res) => {
     );
 });
 
-router.get("/:id", (req, res) => {
-  const token = req.headers.authorization;
-  const { id } = req.params;
-  if (token) {
-    jwt.verify(token, process.env.SECRET_KEY, (err, decodedToken) => {
-      if (err) {
-        res.status(401).json({ message: "bad token " + err.message });
-      } else {
-        req.decodedToken = decodedToken;
-        Users.findBy({ id })
-          .then(user => {
-            res.json(user);
-          })
-          .catch(err => {
-            res.status(500).json({
-              message: "Failed to get user: " + err.message
-            });
-          });
-      }
+router.get("/:id", restricted, (req, res) => {
+  Users.findBy({ id })
+    .then(user => {
+      res.json(user);
+    })
+    .catch(err => {
+      res.status(500).json({
+        message: "Failed to get user: " + err.message
+      });
     });
-  }
 });
 
 router.get("/:id/demo", (req, res) => {
@@ -124,7 +102,7 @@ router.get("/:id/demo", (req, res) => {
   }
 });
 
-router.get("/:id/ratings", (req, res) => {
+router.get("/:id/ratings", restricted, (req, res) => {
   const { id } = req.params;
   Users.getRatings(id)
     .then(ratings => {

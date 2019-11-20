@@ -1,6 +1,7 @@
 const express = require("express");
 const Parks = require("./parks-model");
 const router = express.Router();
+const restricted = require("../auth/restricted-middleware");
 
 router.get("/", (req, res) => {
   Parks.find()
@@ -86,7 +87,7 @@ router.get("/:id", (req, res) => {
 router.post("/:id", (req, res) => {
   const park_id = req.params.id;
   const property_id = req.params.body.property_id;
-  const facility = {park_id, property_id}
+  const facility = { park_id, property_id };
   Parks.addFacility(facility)
     .then(data => {
       res.status(200).json(data);
@@ -134,12 +135,12 @@ router.get("/:id/ratings", (req, res) => {
     });
 });
 
-router.post("/:id/ratings", (req, res) => {
-  // const token = req.headers.authorization;
-  //where I need the user_id I use token.payload.user.user_id or something similar
+router.post("/:id/ratings", restricted, (req, res) => {
+  const decodedToken = req.decodedToken;
+  const user_id = decodedToken.subject;
   const { id } = req.params;
   let park_id = id;
-  const { rating, comment, user_id } = req.body;
+  const { rating, comment } = req.body;
   const newRating = { rating, comment, park_id, user_id };
   Parks.addRating(newRating)
     .then(saved => {
@@ -152,7 +153,7 @@ router.post("/:id/ratings", (req, res) => {
     });
 });
 
-router.delete("/:id", (req, res) => {
+router.delete("/:id", restricted, (req, res) => {
   const { id } = req.params;
   Parks.remove(id)
     .then(deleted => {
