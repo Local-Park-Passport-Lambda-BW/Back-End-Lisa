@@ -68,6 +68,7 @@ router.get("/list/demo", (req, res) => {
 });
 
 router.get("/:id", restricted, (req, res) => {
+  const { id } = req.params;
   Users.findBy({ id })
     .then(user => {
       res.json(user);
