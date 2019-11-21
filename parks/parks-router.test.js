@@ -196,19 +196,34 @@ describe("parks-router", () => {
         });
     });
   });
-    describe("PUT /parks/:id allows a user to update a park with a token", () => {
-        test("PUT /parks/:id", () => {
-            return request(server)
-            .put("/parks/1")
-            .send({
-                name: "Botanic Gardens",
-                city: "Belfast",
-                country: "Northern Ireland",
-                description: "A very popular park beside the Ulster Museum. Everyone should visit at least once, for sure!"
-            })
-            .set("authorization", token)
-            .expect(200)
-         
+  describe("PUT /parks/:id allows a user to update a park with a token", () => {
+    test("PUT /parks/:id", () => {
+      return request(server)
+        .put("/parks/1")
+        .send({
+          name: "Botanic Gardens",
+          city: "Belfast",
+          country: "Northern Ireland",
+          description:
+            "A very popular park beside the Ulster Museum. Everyone should visit at least once, for sure!"
         })
-    })
+        .set("authorization", token)
+        .expect(200);
+    });
+  });
+  describe("GET ratings by the park id", () => {
+    test("GET /parks/:id/ratings to display a particular park's ratings and comments", () => {
+      return request(server)
+        .get("/parks/1/ratings")
+        .expect(200)
+        .expect([
+          {
+            rating: 4,
+            comment: "A lovely park - we had a great time.",
+            name: "Botanic Gardens",
+            user_id: 1
+          }
+        ]);
+    });
+  });
 });
