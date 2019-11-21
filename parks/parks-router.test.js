@@ -6,7 +6,35 @@ beforeAll(() => {
   return knex.seed.run();
 });
 
+let token;
+
 describe("parks-router", () => {
+  describe("POST /users/register", () => {
+    test("registers a new user successfully", async () => {
+      const response = await request(server)
+        .post("/users/register")
+        .send({
+          name: "test",
+          email: "test@test.com",
+          username: "test",
+          password: "test1"
+        });
+      expect(200);
+    });
+  });
+  describe("POST /users/login", () => {
+    test("logs in a user and returns a token", async () => {
+      const response = await request(server)
+        .post("/users/login")
+        .send({
+          username: "test",
+          password: "test1"
+        })
+        .expect(200);
+
+      token = response.body.token;
+    });
+  });
   describe("GET /", () => {
     test("retrieves the list of parks", async () => {
       const response = await request(server).get("/");
@@ -168,4 +196,19 @@ describe("parks-router", () => {
         });
     });
   });
+    describe("PUT /parks/:id allows a user to update a park with a token", () => {
+        test("PUT /parks/:id", () => {
+            return request(server)
+            .put("/parks/1")
+            .send({
+                name: "Botanic Gardens",
+                city: "Belfast",
+                country: "Northern Ireland",
+                description: "A very popular park beside the Ulster Museum. Everyone should visit at least once, for sure!"
+            })
+            .set("authorization", token)
+            .expect(200)
+         
+        })
+    })
 });
