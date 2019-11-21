@@ -207,7 +207,7 @@ describe("parks-router", () => {
           description:
             "A very popular park beside the Ulster Museum. Everyone should visit at least once, for sure!"
         })
-        .set("authorization", token)
+        .set("Authorization", token)
         .expect(200);
     });
   });

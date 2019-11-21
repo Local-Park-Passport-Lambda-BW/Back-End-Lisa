@@ -78,11 +78,11 @@ router.get("/:id", (req, res) => {
 
 router.post("/:id", (req, res) => {
   const park_id = req.params.id;
-  const property_id = req.params.body.property_id;
+  const property_id = req.body.property_id;
   const facility = { park_id, property_id };
   Parks.addFacility(facility)
-    .then(data => {
-      res.status(200).json(data);
+    .then(() => {
+      res.status(200).json({message: "Facility successfully added to park."});
     })
     .catch(err => {
       res.status(500).json({
