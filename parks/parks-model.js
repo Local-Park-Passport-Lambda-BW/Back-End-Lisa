@@ -35,7 +35,7 @@ function add(park) {
 
 function addFacility(facility) {
   return db("park_properties")
-    .insert(facility, "")
+    .insert(facility, "id")
     .then(ids => {
       const [id] = ids;
       return findById(id);
