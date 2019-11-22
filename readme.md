@@ -1,4 +1,9 @@
 
+DOCS CAN BE FOUND HERE:
+
+https://documenter.getpostman.com/view/8704749/SW7aZUNR
+
+
 FOR LOCAL FUNCTIONALITY:
 
 Here are the steps.
