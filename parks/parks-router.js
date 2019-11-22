@@ -78,11 +78,11 @@ router.get("/:id", (req, res) => {
 
 router.post("/:id", (req, res) => {
   const park_id = req.params.id;
-  const property_id = req.params.body.property_id;
+  const property_id = req.body.property_id;
   const facility = { park_id, property_id };
   Parks.addFacility(facility)
-    .then(data => {
-      res.status(200).json(data);
+    .then(() => {
+      res.status(200).json({message: "Facility successfully added to park."});
     })
     .catch(err => {
       res.status(500).json({
@@ -133,22 +133,6 @@ router.post("/:id/ratings", restricted, (req, res) => {
   const { id } = req.params;
   let park_id = id;
   const { rating, comment } = req.body;
-  const newRating = { rating, comment, park_id, user_id };
-  Parks.addRating(newRating)
-    .then(saved => {
-      res.status(200).json(saved);
-    })
-    .catch(err => {
-      res.status(500).json({
-        message: "Error adding the rating: " + err.message
-      });
-    });
-});
-
-router.post("/:id/ratings/demo", (req, res) => {
-  const { id } = req.params;
-  let park_id = id;
-  const { rating, comment, user_id } = req.body;
   const newRating = { rating, comment, park_id, user_id };
   Parks.addRating(newRating)
     .then(saved => {

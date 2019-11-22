@@ -1,12 +1,17 @@
 
+DOCS CAN BE FOUND HERE:
+
+https://documenter.getpostman.com/view/8704749/SW7aZUNR
+
+
 FOR LOCAL FUNCTIONALITY:
 
 Here are the steps.
 
 - Clone the repo
-- npm run install
-- knex migrate:latest
-- knex seed:run
+- npm install
+- npx knex migrate:latest
+- npx knex seed:run
 - npm start
 
 

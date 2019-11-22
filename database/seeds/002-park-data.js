@@ -1,6 +1,5 @@
 exports.seed = function(knex) {
   return knex("parks")
-    .truncate()
     .then(function() {
       return knex("parks").insert([
         {

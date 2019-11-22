@@ -11,15 +11,16 @@ module.exports = {
   getParkById,
   addRating,
   getAllFacilities,
-  addFacility
+  addFacility,
+
 };
 
 function find() {
   return db("parks as p")
-    .select("p.id", "name", "description", "city", "country")
+    .select("p.id", "p.name", "p.description", "p.city", "p.country")
     .avg("ratings.rating as average_rating")
     .leftJoin("ratings", "p.id", "ratings.park_id")
-    .groupBy("p.name");
+    .groupBy("p.id", "p.name", "p.description", "p.city", "p.country");
 }
 
 
@@ -34,7 +35,7 @@ function add(park) {
 
 function addFacility(facility) {
   return db("park_properties")
-    .insert(facility)
+    .insert(facility, "id")
     .then(ids => {
       const [id] = ids;
       return findById(id);
@@ -76,7 +77,7 @@ function findFacilities(id) {
 
 function getRatings(id) {
   return db("ratings as r")
-    .select("r.rating", "r.comment", "p.name")
+    .select("r.rating", "r.comment", "p.name", "r.user_id")
     .join("parks as p", "r.park_id", "p.id")
     .join("users as u", "r.user_id", "u.id")
     .where("p.id", id);
@@ -87,6 +88,7 @@ function update(changes, id) {
     .update(changes)
     .where({ id });
 }
+
 
 function remove(id) {
   return db("parks")
